@@ -1,0 +1,193 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu");
+@import url("https://fonts.googleapis.com/css?family=Major+Mono+Display");
+@import url("https://fonts.googleapis.com/css?family=Noto+Serif+SC");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+body {
+  background: url("https://media.giphy.com/media/aRZ4vTsHnyW6A/giphy.gif")
+    no-repeat fixed center;
+  background-size: cover;
+  color: whitesmoke;
+}
+
+
+#start-title {
+  display: block;
+  opacity: 0.75;
+  width: 60%;
+  height: 25%;
+  margin: auto;
+  border-radius: 25px;
+  padding: 10px;
+  background-color: rgba(26, 17, 5, 0.199);
+    font-size: 2em;
+}
+#intro-page {
+  opacity: 0.75;
+  display: block;
+  background: url("https://media.giphy.com/media/WYsDOuRz0dcKQ/giphy.gif");
+  width: 60%;
+  padding: 10px;
+  border-radius: 25px;
+  margin: auto;
+  
+  font-size: 2em;
+}
+#start-page {
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+  padding: 1%;
+}
+
+
+#start-page-button {
+  display: block;
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50px;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+button {
+  display: block;
+  min-height: 100px;
+  min-width: 200px;
+  margin-bottom: 1.5em;
+  font-size: 3em;
+  border: none;
+  background-color: blue;
+  color: whitesmoke;
+  border-radius: 25%;
+  padding: 0.5em 1em;
+  width: 75%;
+  max-width: 200px;
+  font-weight: bold;
+}
+
+
+#question,
+#feedback-page,
+#final-page {
+  display: block;
+  opacity: 0.75;
+  width: 75%;
+  min-width: 525px;
+  height: 25%;
+  margin-top: 5%;
+  margin-left: 10%;
+  border-radius: 25px;
+  padding: 10px;
+  background: url("https://media.giphy.com/media/3o7TKMWq9MnDjstFHW/giphy.gif");
+   font-size: 1.5em;
+}
+
+
+
+#js-form {
+  display: block;
+  opacity: 0.75;
+  width: 75%;
+  min-width: 525px;
+  margin-top: 5%;
+  margin-left: 10%;
+  border-radius: 25px;
+  padding: 10px;
+  background-color: rgba(51, 114, 77, 0.226);
+  font-family: "Noto Serif SC", serif;
+  font-size: 1.2em;
+}
+fieldset {
+  border: none !important;
+}
+
+span {
+  word-wrap: break-word;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+#js-submit-button,
+#js-next-button,
+#js-restart-button {
+  display: block;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  margin-bottom: 0;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+
+#status-bar {
+  display: block;
+  min-height: 50px;
+  min-width: 100px;
+  max-width: 200px;
+  margin-bottom: 1.5em;
+  margin-left: 2.5%;
+  font-size: 1.05em;
+  border: none;
+  background-color:blue;
+  color: #ffedfc;
+  border-radius: 10px;
+  padding: 0.5em 1em;
+  width: 60%;
+}
+
+
+
+@media only screen and (max-width: 650px) {
+  #feedback-page,
+  #final-page,
+  #js-form,
+  #quiz-app {
+    flex-direction: column;
+    min-width: 300px;
+    font-size: 1em;
+  }
+
+  #question-title {
+    flex-direction: column;
+    width: 100px;
+    font-size: 1em;
+  }
+
+  button,
+  #js-submit-button,
+  #js-restart-button,
+  #start-page-button {
+    flex-direction: column;
+    min-width: 50x;
+    min-height: 50px;
+    text-align: center;
+    font-size: 1.25em;
+    margin-top: 50px;
+  }
+
+  #status-bar {
+    flex-direction: column;
+    margin-top: 100px;
+  }
+
+  #feedback-page > img {
+    max-width: 300px;
+  }
+}
