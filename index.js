@@ -73,19 +73,17 @@ function nextQuestion() {
     questionTemplate(correctAnswers, question, questionsAnswered)
   );
 }
-
-//Question Templates
 function questionTemplate(correctAnswers, question, questionsAnswered) {
   return `
-      <section id="quiz-app" role="main">
+     
     <div id ="question-title">
       <h2 id="question">${question.text}</h2>
      </div> 
-      <form id= "js-form">
+     
         <fieldset>
         <br>
           <label>
-            <input class="answer" type="radio" name="option" checked></input>
+            <input class="answer" type="radio" name="option" ></input>
             <span>${question.ans1}</span>
           </label>
           <br>
@@ -100,13 +98,13 @@ function questionTemplate(correctAnswers, question, questionsAnswered) {
           </label>
           <br>
         </fieldset>  
-      </form>
+     
       <button id="js-submit-button">Submit</button>
       <div id="status-bar">
       <span id="question-count">Question: ${question.number}/5</span> <br>
       <span id="score-count">Score: ${correctAnswers}/${questionsAnswered}</span>
       </div> 
-    </section>
+   
     `;
 }
 
@@ -221,4 +219,4 @@ function runButton() {
 }
 
 
-runButton();
+$(runButton)();
