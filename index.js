@@ -1,13 +1,9 @@
+
 "use strict";
 
 
-let questionNum = 1;
-let correctAnswers = 0;
 
-/* Create arrays of questions and answers */
-
-
-const createQuestionSet = [
+const STORE = [
   {
     number: 1,
     text: `Javascript is going to be an outdated technology, don't learn it`,
@@ -64,10 +60,11 @@ function startButton() {
     nextQuestion();
   });
 }
-
+let questionNum = 1;
+let correctAnswers = 0;
 
 function nextQuestion() {
-  const question = createQuestionSet[questionNum - 1];
+  const question = STORE[questionNum - 1];
   const questionsAnswered = questionNum - 1;
   $("#start-page").html(
     questionTemplate(correctAnswers, question, questionsAnswered)
@@ -78,27 +75,27 @@ function questionTemplate(correctAnswers, question, questionsAnswered) {
      
     <div id ="question-title">
       <h2 id="question">${question.text}</h2>
-     </div> 
-     
+      <div>
+     <section>
         <fieldset>
         <br>
-          <label>
+          <form>
             <input class="answer" type="radio" name="option" ></input>
             <span>${question.ans1}</span>
-          </label>
+          </form>
           <br>
-          <label>
+          <form>
             <input class="answer" type="radio" name="option"></input>
             <span>${question.ans2}</span>
-          </label>
+          </form>
           <br>
-          <label>
+          <form>
             <input class="answer" type="radio" name="option"></input>
             <span>${question.ans3}</span>
-          </label>
+          </form>
           <br>
         </fieldset>  
-     
+     </section>
       <button id="js-submit-button">Submit</button>
       <div id="status-bar">
       <span id="question-count">Question: ${question.number}/5</span> <br>
@@ -107,6 +104,8 @@ function questionTemplate(correctAnswers, question, questionsAnswered) {
    
     `;
 }
+
+
 
 function findLongestWordLength(str) {
   return str.split(" ").sort(function(a, b) {
@@ -219,4 +218,4 @@ function runButton() {
 }
 
 
-$(runButton)();
+$(runButton);
