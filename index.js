@@ -1,221 +1,270 @@
 
 "use strict";
 
-
-
-const STORE = [
-  {
-    number: 1,
-    text: `Javascript is going to be an outdated technology, don't learn it`,
-    ans1: `(a) True: Go is the new hype man! `,
-    ans2: `(b) False: Jeff Atwood said "Any application that can be written in JavaScript, will eventually be written in JavaScript"`,
-    ans3: `(c) Javascript is lame of course`
-  },
-
-  {
-    number: 2,
-    text: `JavaScript is the best language for data science?`,
-    ans1: `(a) True: Dude, JavaScript can do anything`,
-    ans2: `(b) False: Yes you can use JavaScript for data science, but Python is better designed for data science`,
-    ans3: `(c) It's the best type of language to talk about
+const STORE = {
+  questions: [//1
+    {
+      question: `Javascript is going to be an outdated technology, don't learn it`,
+      answers: [
+        `(a) True: Go is the new hype man! `,
+        `(b) False: Jeff Atwood said Any application that can be written in JavaScript, will eventually be written in JavaScript`,
+        `(c) Javascript is lame of course`,
+             ],
+      correctAnswer: `(b) False: Jeff Atwood said Any application that can be written in JavaScript, will eventually be written in JavaScript`,
+      
+    },
+    //2
+    {
+      question: `JavaScript is the best language for data science?`,
+      answers: [
+        `(a) True: Dude, JavaScript can do anything`,
+     `(b) False: Yes you can use JavaScript for data science, but Python is better designed for data science`,
+     `(c) It's the best type of language to talk about
     coffee brewery scripting art using Java beans`
-  },
+      ],
+      correctAnswer:  `(b) False: Yes you can use JavaScript for data science, but Python is better designed for data science`,
+      
+    },
+    //3
+    {
+      question:  `JavaScript can only be used on the frontend`,
+      answers: [
+        `(a) True`,
+      `(b) False`,
+      `(c) You can do whatever you want with Javacript, like build complex desktop app`
+      ],
+      correctAnswer: `(b) False`,
+     
+    },
+    //4
+    {
+      question: `The name JavaScript is borrowed from another programming language
+      "Java"`,
+      answers: [ `(a) True`,
+      `(b) False`,
+      `(c) Yes, someone felt down from a tree and a Java bean hit their head and they saw "script" in the clouds`],
+      correctAnswer:  `(b) False`,
+      
+    },
+    //5
+    {
+      question: `You cannot become a Web Developer just with JavaScript`,
+      answers: [
+       `(a) True`,
+     `(b) False`,
+     `(c) You need a 4 year undergrad degree, 2 year masters, and 5 year PHD to become a web developer`
+      ],
+      correctAnswer: `(b) False`
+    }
+  ],
+  quizStarted: false,
+  currentQuestion: 0,
+  score: 0
+};
 
-  {
-    number: 3,
-    text: `JavaScript can only be used on the frontend`,
-    ans1: `(a) True`,
-    ans2: `(b) False`,
-    ans3: `(c) You can do whatever you want with Javacript, like build complex desktop app`
-  },
-  {
-    number: 4,
-    text: `The name JavaScript is borrowed from another programming language
-    "Java"`,
-    ans1: `(a) True`,
-    ans2: `(b) False`,
-    ans3: `(c) Yes, someone felt down from a tree and a Java bean hit their head and they saw "script" in the clouds`
-  },
-  {
-    number: 5,
-    text: `You cannot become a Web Developer just with JavaScript`,
-    ans1: `(a) True`,
-    ans2: `(b) False`,
-    ans3: `(c) You need a 4 year undergrad degree, 2 year masters, and 5 year PHD to become a web developer`
+
+function generateStartScreenHtml() {
+  return `
+    <div class="start-screen">
+      <p>A quick quiz to test your knowledge of basic Javascript.</p>
+      <button type="button" id="start">Start Quiz</button>
+    </div>
+  `;
+}
+
+
+
+function generateQuestionNumberAndScoreHtml() {
+  return `
+    <ul class="question-and-score">
+      <li id="question-number">
+        Question Number: ${STORE.currentQuestion + 1}/${STORE.questions.length}
+      </li>
+      <li id="score">
+        Score: ${STORE.score}/${STORE.questions.length}
+      </li>
+    </ul>
+  `;
+}
+
+
+function generateAnswersHtml() {
+  const answersArray = STORE.questions[STORE.currentQuestion].answers
+  let answersHtml = '';
+  let i = 0;
+
+  answersArray.forEach(answer => {
+    answersHtml += `
+      <div id="option-container-${i}">
+        <input type="radio" name="options" id="option${i + 1}" value= "${answer}" tabindex ="${i + 1}" required> 
+        <label for="option${i + 1}"> ${answer}</label>
+      </div>
+    `;
+    i++;
+  });
+  return answersHtml;
+}
+
+
+function generateQuestionHtml() {
+  let currentQuestion = STORE.questions[STORE.currentQuestion];
+  return `
+    <form id="question-form" class="question-form">
+      <fieldset>
+        <div class="question">
+          <legend> ${currentQuestion.question}</legend>
+        </div>
+        <div class="options">
+          <div class="answers">
+            ${generateAnswersHtml()}
+          </div>
+        </div>
+        <button type="submit" id="submit-answer-btn" tabindex="5">Submit</button>
+        <button type="button" id="next-question-btn" tabindex="6"> Next &gt;></button>
+      </fieldset>
+    </form >
+  `;
+}
+
+
+
+function generateResultsScreen() {
+  return `
+    <div class="results">
+      <form id="js-restart-quiz">
+        <fieldset>
+          <div class="row">
+        
+              <legend>Your Score is: ${STORE.score}/${STORE.questions.length}</legend>
+            </div>
+          </div>
+        
+          <div class="row">
+          
+              <button type="button" id="restart"> Restart Quiz </button>
+            </div>
+          </div>
+        </fieldset>
+    </form>
+    </div>
+  `;
+}
+
+
+
+function generateFeedbackHTML(answerStatus) {
+  let correctAnswer = STORE.questions[STORE.currentQuestion].correctAnswer;
+  let html = '';
+  if (answerStatus === 'correct') {
+    html = `
+    <img src="https://media.giphy.com/media/iDIV2HpWFYpFzZYHXL/giphy.gif" alt="Corect Answer">
+    `;
   }
-];
+  else if (answerStatus === 'incorrect') {
+    html = `
+      
+      <img src="https://media.giphy.com/media/xVIkfXYGTJeZKilg3p/giphy.gif" alt="Wrong">
+    `;
+  }
+  return html;
+}
 
-//All Answers Object
-const ANSWERS = [
-  `(b) False: Jeff Atwood said "Any application that can be written in JavaScript, will eventually be written in JavaScript"`,
-  `(b) False: Yes you can use JavaScript for data science, but Python is better designed for data science`,
-  `(b) False`,
-  `(b) False`,
-  `(b) False`
-];
+/********** RENDER FUNCTION **********/
+
+
+function render() {
+  let html = '';
+
+  if (STORE.quizStarted === false) {
+    $('main').html(generateStartScreenHtml());
+    return;
+  }
+  else if (STORE.currentQuestion >= 0 && STORE.currentQuestion < STORE.questions.length) {
+    html = generateQuestionNumberAndScoreHtml();
+    html += generateQuestionHtml();
+    $('main').html(html);
+  }
+  else {
+    $('main').html(generateResultsScreen());
+  }
+}
+
+/********** EVENT HANDLER FUNCTIONS **********/
 
 
 function startButton() {
-  $("#js-start-button").click(function(event) {
-    nextQuestion();
+  $('main').on('click', '#start', function (event) {
+    STORE.quizStarted = true;
+    render();
   });
 }
-let questionNum = 1;
-let correctAnswers = 0;
 
-function nextQuestion() {
-  const question = STORE[questionNum - 1];
-  const questionsAnswered = questionNum - 1;
-  $("#start-page").html(
-    questionTemplate(correctAnswers, question, questionsAnswered)
-  );
-}
-function questionTemplate(correctAnswers, question, questionsAnswered) {
-  return `
-     
-    <div id ="question-title">
-      <h2 id="question">${question.text}</h2>
-      <div>
-     <section>
-        <fieldset>
-        <br>
-          <form>
-            <input class="answer" type="radio" name="option" ></input>
-            <span>${question.ans1}</span>
-          </form>
-          <br>
-          <form>
-            <input class="answer" type="radio" name="option"></input>
-            <span>${question.ans2}</span>
-          </form>
-          <br>
-          <form>
-            <input class="answer" type="radio" name="option"></input>
-            <span>${question.ans3}</span>
-          </form>
-          <br>
-        </fieldset>  
-     </section>
-      <button id="js-submit-button">Submit</button>
-      <div id="status-bar">
-      <span id="question-count">Question: ${question.number}/5</span> <br>
-      <span id="score-count">Score: ${correctAnswers}/${questionsAnswered}</span>
-      </div> 
-   
-    `;
+/**
+ * Handles the click of the "next" button
+ */
+function nextButtonClick() {
+  $('body').on('click', '#next-question-btn', (event) => {
+    render();
+  });
 }
 
-
-
-function findLongestWordLength(str) {
-  return str.split(" ").sort(function(a, b) {
-    return b.length - a.length;
-  })[0];
-}
-
+/**
+ * Handles the submission of the question form
+ */
 function submitButton() {
-  $("#start-page").on("click", "#js-submit-button", function(event) {
+  $('body').on('submit', '#question-form', function (event) {
     event.preventDefault();
-    const answer = $("input:checked").siblings("span");
-    const userIsCorrect = userAnswer(answer);
-    if (userIsCorrect) {
-      rightFeedback();
-    } else {
-      wrongFeedback();
+    const currentQuestion = STORE.questions[STORE.currentQuestion];
+
+    // get value from checkbox checked by user
+    let selectedOption = $('input[name=options]:checked').val();
+    
+
+    let optionContainerId = `#option-container-${currentQuestion.answers.findIndex(i => i === selectedOption)}`;
+
+    if (selectedOption === currentQuestion.correctAnswer) {
+      STORE.score++;
+      $(optionContainerId).append(generateFeedbackHTML('correct'));
     }
+    else {
+      $(optionContainerId).append(generateFeedbackHTML('incorrect'));
+    }
+    STORE.currentQuestion++;
+    // hide the submit button
+    $('#submit-answer-btn').hide();
+    // disable all inputs
+    $('input[type=radio]').each(() => {
+      $('input[type=radio]').attr('disabled', true);
+    });
+    // show the next button
+    $('#next-question-btn').show();
+
   });
 }
-
-
-function nextButton() {
-  $("#start-page").on("click", "#js-next-button", function(event) {
-    if (questionNum === 5) {
-      resultsPage(correctAnswers);
-    } else {
-      iterateQuestion();
-      nextQuestion();
-    }
-  });
+/**
+ * Resets all values to prepare to restart quiz
+ */
+function restartQuiz() {
+  STORE.quizStarted = false;
+  STORE.currentQuestion = 0;
+  STORE.score = 0;
 }
-
-function userAnswer(answer) {
-  if (answer.text() === ANSWERS[questionNum - 1]) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-
-function rightFeedback() {
-  $("#start-page").html(correctFeedback);
-  iterateCorrectAnswers();
-}
-
-
-const correctFeedback = `
-    <section id="feedback-page" role="main">
-      <h2 >Correct! The right answer is: ${ANSWERS[questionNum + 1]}</h2>
-      <img src="https://media.giphy.com/media/iDIV2HpWFYpFzZYHXL/giphy.gif" alt="Corect Answer">
-    </section>
-    <button id="js-next-button">Next</button>
-  `;
-
-
-function wrongFeedback() {
-  $("#start-page").html(wrongTemplate(questionNum));
-}
-
-
-function wrongTemplate(questionNum) {
-  return `
-      <section id="feedback-page" role="main">
-        <h2>Sorry, wrong answer! The right answer was ${
-          ANSWERS[questionNum - 1]
-        }!</h2>
-        <img src="https://media.giphy.com/media/xVIkfXYGTJeZKilg3p/giphy.gif" alt="Wrong">
-      </section>
-      <button id="js-next-button">Next</button>
-  `;
-}
-
-
-function iterateQuestion() {
-  questionNum++;
-}
-
-
-function iterateCorrectAnswers() {
-  correctAnswers++;
-}
-
-
-function resultsPage(correctAnswers) {
-  $("#start-page").html(`
-      <section id="final-page">
-        <h2>Final Score: ${correctAnswers} out of 5</h2>
-      </section>
-      <button id="js-restart-button">Try Again?</button>
-    `);
-}
-
 
 function restartButton() {
-  $("#start-page").on("click", "#js-restart-button", function(event) {
-    questionNum = 1;
-    correctAnswers = 0;
-    
-    nextQuestion();
+  $('body').on('click', '#restart', () => {
+    restartQuiz();
+    render();
   });
 }
 
-
 function runButton() {
+  render();
   startButton();
+  nextButtonClick();
   submitButton();
-  nextButton();
   restartButton();
 }
 
-
 $(runButton);
+
+
